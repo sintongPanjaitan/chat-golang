@@ -37,9 +37,9 @@ func main() {
 	go handleMessages()
 
 	// Start the server on localhost port 8000 and log any errors
-	log.Println("http server started on :8000")
-	port := os.Getenv("PORT")
-	err := http.ListenAndServe(port, nil)
+	log.Println("http server started on :8000 " + os.Getenv("PORT"))
+	// port := os.Getenv("PORT")
+	err := http.ListenAndServe(os.Getenv("PORT"), nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
