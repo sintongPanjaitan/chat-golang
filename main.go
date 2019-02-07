@@ -26,10 +26,6 @@ type Message struct {
 	Message  string `json:"message"`
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello. This is our first Go web app on Heroku!")
-}
-
 func GetPort() string {
 	var port = os.Getenv("PORT")
 	// Set a default port if there is nothing in the environment
@@ -58,7 +54,7 @@ func main() {
 	// if err != nil {
 	// log.Fatal("ListenAndServe: ", err)
 	// }
-	http.HandleFunc("/", handler)
+
 	fmt.Println("listening...")
 	err := http.ListenAndServe(GetPort(), nil)
 	if err != nil {
