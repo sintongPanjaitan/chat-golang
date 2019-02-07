@@ -42,7 +42,7 @@ func main() {
 	http.Handle("/", fs)
 
 	// Configure websocket route
-	http.HandleFunc("/ws", handleConnections)
+	http.HandleFunc("/wss", handleConnections)
 
 	// Start listening for incoming chat messages
 	go handleMessages()
