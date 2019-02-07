@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -25,6 +26,20 @@ type Message struct {
 	Message  string `json:"message"`
 }
 
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello. This is our first Go web app on Heroku!")
+}
+
+func GetPort() string {
+	var port = os.Getenv("PORT")
+	// Set a default port if there is nothing in the environment
+	if port == "" {
+		port = "4747"
+		fmt.Println("INFO: No PORT environment variable detected, defaulting to " + port)
+	}
+	return ":" + port
+}
+
 func main() {
 	// Create a simple file server
 	fs := http.FileServer(http.Dir("public"))
@@ -37,12 +52,19 @@ func main() {
 	go handleMessages()
 
 	// Start the server on localhost port 8000 and log any errors
-	log.Println("http server started on :8000 " + os.Getenv("PORT"))
+	log.Println("http server started on :8000 ")
 	// port := os.Getenv("PORT")
-	err := http.ListenAndServe(os.Getenv("PORT"), nil)
+	// err := http.ListenAndServe(os.Getenv("PORT"), nil)
+	// if err != nil {
+	// log.Fatal("ListenAndServe: ", err)
+	// }
+	http.HandleFunc("/", handler)
+	fmt.Println("listening...")
+	err := http.ListenAndServe(GetPort(), nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
+
 }
 
 func handleConnections(w http.ResponseWriter, r *http.Request) {
